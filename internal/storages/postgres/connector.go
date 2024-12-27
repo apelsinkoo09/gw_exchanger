@@ -6,40 +6,39 @@ import (
 	"gw_exchanger/pkg/env"
 	"log"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
-type Connector struct {
-	USERNAME_DB string
-	PASSWORD_DB string
-	DATABASE    string
-	HOST_DB     string
-	PORT_DB     string
-}
-
-func (c *Connector) Connection() (*sql.DB, error) {
+func Connection() (*sql.DB, error) {
 	err := env.LoadConfig("../config.env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
-	conInfo := Connector{
-		USERNAME_DB: os.Getenv("USERNAME_DB"),
-		PASSWORD_DB: os.Getenv("PASSWORD_DB"),
-		DATABASE:    os.Getenv("DATABASE"),
-		HOST_DB:     os.Getenv("HOST_DB"),
-		PORT_DB:     os.Getenv("PORT_DB"),
+
+	USERNAME_DB := os.Getenv("USERNAME_DB")
+	PASSWORD_DB := os.Getenv("PASSWORD_DB")
+	DATABASE := os.Getenv("DATABASE")
+	HOST_DB := os.Getenv("HOST_DB")
+	PORT_DB := os.Getenv("PORT_DB")
+
+	if USERNAME_DB == "" || PASSWORD_DB == "" || DATABASE == "" || HOST_DB == "" || PORT_DB == "" {
+		return nil, fmt.Errorf("missing required environment variables")
 	}
+
 	conString := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s",
-		conInfo.HOST_DB, conInfo.PORT_DB, conInfo.USERNAME_DB,
-		conInfo.PASSWORD_DB, conInfo.DATABASE,
+		HOST_DB, PORT_DB, USERNAME_DB,
+		PASSWORD_DB, DATABASE,
 	)
+
 	db, err := sql.Open("postgres", conString)
 	if err != nil {
-		return nil, fmt.Errorf("Incorrect data: %v", err)
+		return nil, fmt.Errorf("Failed to connect to database: %v", err)
 	}
 
 	if err := db.Ping(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Database is unreachable: %v", err)
 	}
 	fmt.Println("Successfully connected to PostgreSQL!")
 	return db, nil
