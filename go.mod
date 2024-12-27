@@ -3,9 +3,10 @@ module gw_exchanger
 go 1.23.4
 
 require (
-	github.com/apelsinkoo09/proto-exchange v0.0.0-20241227084838-4dd44d5bae1f
+	github.com/apelsinkoo09/proto-exchange v0.0.0-20241227101652-c844b56992a7
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
+	golang.org/x/mod v0.17.0
 	google.golang.org/grpc v1.69.2
 )
 

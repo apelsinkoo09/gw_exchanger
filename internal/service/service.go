@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"gw_exchanger/internal/storages/postgres"
 
-	_ "github.com/apelsinkoo09/proto-exchange"
+	exchange "github.com/apelsinkoo09/proto-exchange"
 )
 
 type ExchangeService struct {
 	db *postgres.StorageConn
+	exchange.UnimplementedExchangeServiceServer
 }
 
 func NewExchangeService(db *postgres.StorageConn) *ExchangeService {

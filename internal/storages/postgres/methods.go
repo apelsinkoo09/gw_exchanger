@@ -6,11 +6,11 @@ import (
 )
 
 type StorageConn struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
-func (db *StorageConn) GetAllExchangeRates(ctx context.Context) (map[string]float32, error) {
-	rows, err := db.db.QueryContext(ctx, "SELECT from_currency || '->' || to_currency AS currency, rate FROM exchange_rates")
+func (DB *StorageConn) GetAllExchangeRates(ctx context.Context) (map[string]float32, error) {
+	rows, err := DB.DB.QueryContext(ctx, "SELECT from_currency || '->' || to_currency AS currency, rate FROM exchange_rates")
 	if err != nil {
 		return nil, err
 	}
@@ -28,9 +28,9 @@ func (db *StorageConn) GetAllExchangeRates(ctx context.Context) (map[string]floa
 	return rates, nil
 }
 
-func (db *StorageConn) GetExchangeRate(ctx context.Context, fromCurrency, toCurrency string) (float64, error) {
+func (DB *StorageConn) GetExchangeRate(ctx context.Context, fromCurrency, toCurrency string) (float64, error) {
 	var rate float64
-	err := db.db.QueryRow("SELECT rate FROM exchange_rates WHERE from_currency = $1 AND to_currency = $2", fromCurrency, toCurrency).Scan(&rate)
+	err := DB.DB.QueryRow("SELECT rate FROM exchange_rates WHERE from_currency = $1 AND to_currency = $2", fromCurrency, toCurrency).Scan(&rate)
 	if err != nil {
 		return 0, err
 	}
