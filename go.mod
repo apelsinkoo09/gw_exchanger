@@ -8,6 +8,8 @@ require (
 	github.com/lib/pq v1.10.9
 	golang.org/x/mod v0.17.0
 	google.golang.org/grpc v1.69.2
+	golang.org/x/mod v0.17.0
+	google.golang.org/grpc v1.69.2
 )
 
 require (
