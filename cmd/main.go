@@ -24,7 +24,11 @@ func main() {
 	server := grpc.NewServer()
 	exchange.RegisterExchangeServiceServer(server, exchangeService)
 
+<<<<<<< HEAD
 	serv, err := net.Listen("tcp", "exchanger:50051")
+=======
+	serv, err := net.Listen("tcp", ":50051")
+>>>>>>> e5f495f26039e46d21c26b8e0d9fd5f9696ba28f
 	if err != nil {
 		log.Fatalf("Failed to listen on port 50051: %v", err)
 	}
